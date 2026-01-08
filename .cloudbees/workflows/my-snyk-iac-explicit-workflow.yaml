@@ -2,7 +2,9 @@ name: My snyk-iac-explicit-public-workflow
 apiVersion: automation.cloudbees.io/v1alpha1
 kind: workflow
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - dev
 permissions:
   scm-token-own: read
   scm-token-org: read
@@ -18,7 +20,6 @@ jobs:
         with:
           snyk-token: ${{ secrets.SNYK_TOKEN }}
           org-id: ${{ vars.SNYK_ORG_ID }}
-          
       - id: print-outputs-from-snyk-iac-step
         name: print outputs from upstream Snyk IaC step
         uses: docker://alpine:latest
