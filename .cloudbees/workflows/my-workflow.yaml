@@ -1,17 +1,32 @@
+name: snyk-iac-explicit-workflow
 apiVersion: automation.cloudbees.io/v1alpha1
 kind: workflow
-name: My workflow
-
 on:
-  push:
-    branches:
-      - '**'
-
+  workflow_dispatch:
+permissions:
+  scm-token-own: read
+  scm-token-org: read
+  id-token: write
 jobs:
   build:
     steps:
-      - name: Say hello
-        uses: docker://golang:1.20.3-alpine3.17
-        shell: sh
+      - name: checkout-source-code
+        uses: cloudbees-io/checkout@v1
+      - name: Run Snyk IaC Scan
+        id: snyk-iac-step
+        uses: cloudbees-io/snyk-iac-plugin-private@v1
+        with:
+          snyk-token: ${{ secrets.SNYK_TOKEN }}
+          org-id: ${{ vars.SNYK_ORG_ID }}
+          severity-threshold: 'low'
+          
+      - id: print-outputs-from-snyk-iac-step
+        name: print outputs from upstream Snyk IaC step
+        uses: docker://alpine:latest
         run: |
-          echo "hello world"
+          echo "Outputs from upstream Snyk IaC step:"
+          echo "Critical count: ${{ steps.snyk-iac-step.outputs.critical-count }}"
+          echo "Very high count: ${{ steps.snyk-iac-step.outputs.very-high-count }}"
+          echo "High count: ${{ steps.snyk-iac-step.outputs.high-count }}"
+          echo "Medium count: ${{ steps.snyk-iac-step.outputs.medium-count }}"
+          echo "Low count: ${{ steps.snyk-iac-step.outputs.low-count }}"
