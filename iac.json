@@ -1,25 +1,29 @@
 {
-  "path": "main.tf",
-  "engineType": "terraform",
-  "violations": [
+  "ok": false,
+  "iacType": "terraform",
+  "filePath": "main.tf",
+  "projectName": "terraform-aws-demo",
+  "infrastructureAsCodeIssues": [
     {
-      "id": "SNYK-CC-TF-1",
-      "title": "S3 Bucket allows public read access",
-      "description": "The S3 bucket is configured to allow public read access, which may expose sensitive data.",
-      "impact": "Publicly accessible buckets can lead to data leakage and compliance violations.",
+      "id": "SNYK-CC-TF-20",
+      "title": "S3 Bucket has public read access",
+      "description": "Public read access to S3 buckets can lead to unintended exposure of sensitive data.",
       "severity": "high",
       "confidence": "high",
-      "type": "security",
+      "issueType": "security",
+      "impact": "Data stored in the bucket can be accessed by anyone on the internet.",
+      "resolve": "Remove public read access and restrict access using bucket policies or IAM roles.",
+      "references": [
+        "https://security.snyk.io/rules/cloud/SNYK-CC-TF-20"
+      ],
       "resource": "aws_s3_bucket.public_bucket",
-      "line": 3,
-      "issue": "S3 bucket has ACL set to public-read",
-      "documentation": "https://security.snyk.io/rules/cloud/SNYK-CC-TF-1",
-      "remediation": {
-        "advice": [
-          "Do not use public-read or public-read-write ACLs.",
-          "Restrict access using IAM policies or bucket policies."
-        ]
-      }
+      "path": [
+        {
+          "file": "main.tf",
+          "line": 1,
+          "column": 1
+        }
+      ]
     }
   ],
   "summary": {
@@ -27,10 +31,5 @@
     "high": 1,
     "medium": 0,
     "low": 0
-  },
-  "metadata": {
-    "projectName": "terraform-aws-demo",
-    "fileType": "terraform",
-    "scannedAt": "2026-01-12T10:15:30Z"
   }
 }
