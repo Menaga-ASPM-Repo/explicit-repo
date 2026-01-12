@@ -39,8 +39,4 @@ resource "azurerm_managed_disk" "large-disk" {
   encryption_settings {
     enabled = false
   }
-
-  encryption_settings {
-    enabled = false
-  }
 }
