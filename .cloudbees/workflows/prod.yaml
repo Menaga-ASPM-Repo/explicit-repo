@@ -9,7 +9,7 @@ jobs:
       - uses: cloudbees-io/register-deployed-artifact@v2
         with:
           labels: newsman
-          artifact-id: f142ae34-1960-4604-ae84-59c0cc3f4fcd
+          artifact-id: 7f5d49e4-1ffd-4c46-a052-10e6cbcf15d7
           target-environment: QA
       - uses: cloudbees-io/register-deployed-artifact@v2
         with:
